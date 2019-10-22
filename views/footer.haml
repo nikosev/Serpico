@@ -1,3 +1,9 @@
-%footer.footer
-	%p
-		&copy; Company 2012
+- @config = JSON.parse(File.read('./config.json'))
+%footer.footer.fixed-bottom
+  %div.text-center.align-items-center.bg-dark
+    %div.container
+      %div.row
+        %div.col-12.text-muted
+          %p.my-3
+            #{@config['footer_message']}
+            %a{ :href => "#{@config['footer_href_url']}" } #{@config['footer_href_message']}

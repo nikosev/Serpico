@@ -14,6 +14,9 @@
     "vulnmap":false, //maps vuln ids from MSF vuln db
     "finding_types": ["Web Application","Business Logic","Network Services", "Best Practice", "Compliance", "Database", "Network Internal", "Router Configuration","Social Engineering", "Physical", "Wireless", "Network Security", "System Security", "Logging and Auditing", "Imported"],
     "logo":"/img/logo_1.svg",
+    "footer_message":"&copy; ",
+    "footer_href_url":"https:\/\/github.com\/SerpicoProject\/Serpico",
+    "footer_href_message":"Serpico",
     "auto_import":false, //Experimental, will automatically create new findings on import
     "chart":true, //Enabled or disable support,
     "user_defined_variables":[], //set your global UDV's here; ["client_start_date","client_abbreviated_name"],
