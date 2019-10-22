@@ -54,7 +54,7 @@ def locate_error(error, document, position)
 end
 
 def verify_document(document)
-	metacharacters = document.enum_for(:scan,/Ω|§|¬|π|æ|∞|†|µ|ƒ|÷|å|≠|∆|¥|ツ|⁂|<\/w:tr>/).map { |b| [Regexp.last_match.begin(0),b] }
+	metacharacters = document.enum_for(:scan,/ῼ|§|¬|𝜋|æ|∞|†|µ|ƒ|÷|å|≠|∆|¥|ツ|⁂|<\/w:tr>/).map { |b| [Regexp.last_match.begin(0),b] }
 	i=0
 	buffer = []
 	tree = ""
@@ -258,12 +258,12 @@ def verify_document(document)
 		  tree.concat("#{tabs}å\n")
 		# ツ character
 		when "ツ"
-		  # check if there is anything else than π between two ツ
+		  # check if there is anything else than 𝜋 between two ツ
 		  j = 1
 		  while j+i < metacharacters.length
 			if metacharacters[j+i][1] == "ツ"
 			  break
-			elsif metacharacters[j+i][1] != "π"
+			elsif metacharacters[j+i][1] != "𝜋"
 			  tree_valid = false
 			  break
 			end
@@ -281,7 +281,7 @@ def verify_document(document)
 		  end
 
 		  if j.even?
-			error = "Error with a π character : character without pair"
+			error = "Error with a 𝜋 character : character without pair"
 			tree_valid = false
 			content = document[metacharacters[i][0]+3..metacharacters[i+j][0]-1].gsub(/<.*?>/,"")
 			tree.concat("#{tabs}ツ#{content}ツ  ←\n")
@@ -310,32 +310,32 @@ def verify_document(document)
 		  i = i+1
 
 
-		# Ω character
-		when "Ω"
+		# ῼ character
+		when "ῼ"
 		  tabs = "\t" * buffer.length
-      if (i == metacharacters.length - 1) || (metacharacters[i + 1][1] != 'Ω')
-			error = "Error with a Ω character : character without pair"
-			tree.concat("#{tabs}Ω  ←\n")
+      if (i == metacharacters.length - 1) || (metacharacters[i + 1][1] != 'ῼ')
+			error = "Error with a ῼ character : character without pair"
+			tree.concat("#{tabs}ῼ  ←\n")
 			tree_valid = false
 			locate_error(error, document, metacharacters[i][0])
 			break
 		  end
 		  content = document[metacharacters[i][0]+2..metacharacters[i+1][0]-1].gsub(/<.*?>/,"")
-		  tree.concat("#{tabs}Ω#{content}Ω\n")
+		  tree.concat("#{tabs}ῼ#{content}ῼ\n")
 		  i = i+1
-		# π character
-		when "π"
+		# 𝜋 character
+		when "𝜋"
 		  tabs = "\t" * buffer.length
-      if (i == metacharacters.length - 1) || (metacharacters[i + 1][1] != 'π')
-			error = "Error with a π character : character without pair"
+      if (i == metacharacters.length - 1) || (metacharacters[i + 1][1] != '𝜋')
+			error = "Error with a 𝜋 character : character without pair"
 			tree_valid = false
-			tree.concat("#{tabs}π  ←\n")
+			tree.concat("#{tabs}𝜋  ←\n")
 			locate_error(error, document, metacharacters[i][0])
 			break
 		  end
 
 		  content = document[metacharacters[i][0]+2..metacharacters[i+1][0]-1].gsub(/<.*?>/,"")
-		  tree.concat("#{tabs}π#{content}π\n")
+		  tree.concat("#{tabs}𝜋#{content}𝜋\n")
 		  i = i+1
 
 		# æ character
@@ -477,13 +477,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 ###########################
 
-# Ω - used as a normal substituion variable
+# ῼ - used as a normal substituion variable
 
 # let's pull out variables
-	replace = document.split('Ω')
+	replace = document.split('ῼ')
 
 	if (((replace.size-1) % 2) != 0)
-        raise ReportingError.new("Uneven number of Ω. This is usually caused by a mismatch in a variable.")
+        raise ReportingError.new("Uneven number of ῼ. This is usually caused by a mismatch in a variable.")
 	end
 
 	count = 0
@@ -503,7 +503,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		count = count + 1
 	end
 
-	# remove all the Ω and put the document back together
+	# remove all the ῼ and put the document back together
 	document = replace.join("")
 
 ###########################
@@ -534,18 +534,18 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         count = count + 1
     end
 
-    # remove all the Ω and put the document back together
+    # remove all the ῼ and put the document back together
     document = replace.join("")
 
 
 ###########################
 
-# π - a replacement variable for for-each loops only
+# 𝜋 - a replacement variable for for-each loops only
 
-	replace = document.split('π')
+	replace = document.split('𝜋')
 
 	if (((replace.size-1) % 2) != 0)
-	    raise ReportingError.new("Uneven number of π. This is usually caused by a mismatch in a variable.")
+	    raise ReportingError.new("Uneven number of 𝜋. This is usually caused by a mismatch in a variable.")
     end
 
 	count = 0
@@ -1165,12 +1165,12 @@ def generate_xslt_components(docx)
 		# add in xslt header
 		document = @top + document
 
-		# Ω - used as a normal substituion variable
+		# ῼ - used as a normal substituion variable
 		# let's pull out variables
-		replace = document.split('Ω')
+		replace = document.split('ῼ')
 
 		if (((replace.size-1) % 2) != 0)
-			raise ReportingError.new("Uneven number of Ω. This is usually caused by a mismatch in a variable.")
+			raise ReportingError.new("Uneven number of ῼ. This is usually caused by a mismatch in a variable.")
 		end
 
 		count = 0
@@ -1180,7 +1180,7 @@ def generate_xslt_components(docx)
 				next
 			end
 
-			# Execute when between two Ω
+			# Execute when between two ῼ
 			omega = compress(omega)
 
 			# now, we replace omega with the real deal
@@ -1191,7 +1191,7 @@ def generate_xslt_components(docx)
 			count = count + 1
 		end
 
-		# remove all the Ω and put the document back together
+		# remove all the ῼ and put the document back together
 		document = replace.join("")
 
 		###########################
