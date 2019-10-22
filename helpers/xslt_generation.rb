@@ -54,7 +54,7 @@ def locate_error(error, document, position)
 end
 
 def verify_document(document)
-	metacharacters = document.enum_for(:scan,/ῼ|§|¬|𝜋|æ|∞|†|µ|ƒ|÷|å|≠|∆|¥|ツ|⁂|<\/w:tr>/).map { |b| [Regexp.last_match.begin(0),b] }
+	metacharacters = document.enum_for(:scan,/ῼ|§|¬|Ⱦ|æ|∞|†|µ|ƒ|÷|å|≠|∆|¥|Ʉ|ȹ|<\/w:tr>/).map { |b| [Regexp.last_match.begin(0),b] }
 	i=0
 	buffer = []
 	tree = ""
@@ -256,14 +256,14 @@ def verify_document(document)
 			break
 		  end
 		  tree.concat("#{tabs}å\n")
-		# ツ character
-		when "ツ"
-		  # check if there is anything else than 𝜋 between two ツ
+		# Ʉ character
+		when "Ʉ"
+		  # check if there is anything else than Ⱦ between two Ʉ
 		  j = 1
 		  while j+i < metacharacters.length
-			if metacharacters[j+i][1] == "ツ"
+			if metacharacters[j+i][1] == "Ʉ"
 			  break
-			elsif metacharacters[j+i][1] != "𝜋"
+			elsif metacharacters[j+i][1] != "Ⱦ"
 			  tree_valid = false
 			  break
 			end
@@ -273,24 +273,24 @@ def verify_document(document)
 		  tabs = "\t" * buffer.length
 
 		  if j+i == metacharacters.length || not(tree_valid)
-			error = "Error with a ツ character : character without pair"
+			error = "Error with a Ʉ character : character without pair"
 			tree_valid = false
 			locate_error(error, document, metacharacters[i][0])
-			tree.concat("#{tabs}ツ  ←\n")
+			tree.concat("#{tabs}Ʉ  ←\n")
 			break
 		  end
 
 		  if j.even?
-			error = "Error with a 𝜋 character : character without pair"
+			error = "Error with a Ⱦ character : character without pair"
 			tree_valid = false
 			content = document[metacharacters[i][0]+3..metacharacters[i+j][0]-1].gsub(/<.*?>/,"")
-			tree.concat("#{tabs}ツ#{content}ツ  ←\n")
+			tree.concat("#{tabs}Ʉ#{content}Ʉ  ←\n")
 			break
 		  end
 
 
 		  content = document[metacharacters[i][0]+3..metacharacters[i+j][0]-1].gsub(/<.*?>/,"")
-		  tree.concat("#{tabs}ツ#{content}ツ\n")
+		  tree.concat("#{tabs}Ʉ#{content}Ʉ\n")
 		  i = i+j
 
 
@@ -323,19 +323,19 @@ def verify_document(document)
 		  content = document[metacharacters[i][0]+2..metacharacters[i+1][0]-1].gsub(/<.*?>/,"")
 		  tree.concat("#{tabs}ῼ#{content}ῼ\n")
 		  i = i+1
-		# 𝜋 character
-		when "𝜋"
+		# Ⱦ character
+		when "Ⱦ"
 		  tabs = "\t" * buffer.length
-      if (i == metacharacters.length - 1) || (metacharacters[i + 1][1] != '𝜋')
-			error = "Error with a 𝜋 character : character without pair"
+      if (i == metacharacters.length - 1) || (metacharacters[i + 1][1] != 'Ⱦ')
+			error = "Error with a Ⱦ character : character without pair"
 			tree_valid = false
-			tree.concat("#{tabs}𝜋  ←\n")
+			tree.concat("#{tabs}Ⱦ  ←\n")
 			locate_error(error, document, metacharacters[i][0])
 			break
 		  end
 
 		  content = document[metacharacters[i][0]+2..metacharacters[i+1][0]-1].gsub(/<.*?>/,"")
-		  tree.concat("#{tabs}𝜋#{content}𝜋\n")
+		  tree.concat("#{tabs}Ⱦ#{content}Ⱦ\n")
 		  i = i+1
 
 		# æ character
@@ -379,20 +379,20 @@ def verify_document(document)
 		  i = i+1
 
 
-		# ⁂ character
+		# ȹ character
     # =>  XSLT Code Blocks
-		when "⁂"
+		when "ȹ"
 		  tabs = "\t" * buffer.length
-      if (i == metacharacters.length - 1) || (metacharacters[i + 1][1] != '⁂')
-			error = "Error with a ⁂ character : character without pair"
+      if (i == metacharacters.length - 1) || (metacharacters[i + 1][1] != 'ȹ')
+			error = "Error with a ȹ character : character without pair"
 			tree_valid = false
-			tree.concat("#{tabs}⁂  ←\n")
+			tree.concat("#{tabs}ȹ  ←\n")
 			locate_error(error, document, metacharacters[i][0])
 			break
 		  end
 
 		  content = document[metacharacters[i][0]+2..metacharacters[i+1][0]-1].gsub(/<.*?>/,"")
-		  tree.concat("#{tabs}⁂#{content}⁂\n")
+		  tree.concat("#{tabs}ȹ#{content}ȹ\n")
 		  i = i+1
 
 
@@ -540,12 +540,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 ###########################
 
-# 𝜋 - a replacement variable for for-each loops only
+# Ⱦ - a replacement variable for for-each loops only
 
-	replace = document.split('𝜋')
+	replace = document.split('Ⱦ')
 
 	if (((replace.size-1) % 2) != 0)
-	    raise ReportingError.new("Uneven number of 𝜋. This is usually caused by a mismatch in a variable.")
+	    raise ReportingError.new("Uneven number of Ⱦ. This is usually caused by a mismatch in a variable.")
     end
 
 	count = 0
@@ -1012,12 +1012,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 
   ###########################
-  # ⁂ - an XSLT block insert
+  # ȹ - an XSLT block insert
 
-  replace = document.split('⁂')
+  replace = document.split('ȹ')
 
   if (((replace.size-1) % 2) != 0)
-    raise ReportingError.new("Uneven number of ⁂. This is usually caused by a mismatch in a variable.")
+    raise ReportingError.new("Uneven number of ȹ. This is usually caused by a mismatch in a variable.")
   end
 
   count = 0
@@ -1031,7 +1031,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     # Word puts the XSLT code block into a paragraph node.
     # If we want this to be paragraph agnostic so we can use it in any context (Ex. to change the color of a single
-    # table cell) we can use the ⁂! modifier
+    # table cell) we can use the ȹ! modifier
     # This will remove the <w:p> and </w:p> that are wrapping our code block
     if omega[0] == "!"
       replace[count-1] = replace[count-1][0..replace[count-1].rindex(/<w:p[ >]/)-1]
@@ -1049,12 +1049,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 
 	###############################
-	# ツ - Placeholder for image
+	# Ʉ - Placeholder for image
 
-	replace = document.split('ツ')
+	replace = document.split('Ʉ')
 
 	if (((replace.size-1) % 2) != 0)
-        raise ReportingError.new("Uneven number of ツ. This is usually caused by a mismatch in a variable.")
+        raise ReportingError.new("Uneven number of Ʉ. This is usually caused by a mismatch in a variable.")
 	end
 
 	count = 0
@@ -1064,7 +1064,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			next
 		end
 
-		# Execute when between two ツ
+		# Execute when between two Ʉ
 		omega = compress(omega)
 
 		replace[count]="[!!#{omega.downcase}!!]"
@@ -1072,7 +1072,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		count = count + 1
 	end
 
-	# remove all the ツ and put the document back together
+	# remove all the Ʉ and put the document back together
 	document = replace.join("")
 
 
