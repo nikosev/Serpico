@@ -225,6 +225,9 @@ post '/admin/config' do
   config_options['nessusmap'] = params['nessusmap'] ? true : false
   config_options['vulnmap'] = params['vulnmap'] ? true : false
   config_options['logo'] = params['logo']
+  config_options['footer_message'] = params['footer_message']
+  config_options['footer_href_url'] = params['footer_href_url']
+  config_options['footer_href_message'] = params['footer_href_message']
   config_options['auto_import'] = params['auto_import'] ? true : false
   config_options['chart'] = params['chart'] ? true : false
   config_options['threshold'] = params['threshold']
