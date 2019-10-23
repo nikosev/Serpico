@@ -89,9 +89,3 @@ See also:
 
 ## GOTCHAS
 * Microsoft has a really annoying habit of changing a character for you. Always beware of this when working with the meta language
-
-## Changed metacharacters
-Ω --> ῼ
-π --> 𝜋 --> Ⱦ
-⁂ --> ȹ
-ツ --> Ʉ
